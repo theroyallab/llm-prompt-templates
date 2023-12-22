@@ -6,8 +6,6 @@ A repository of Jinja2 templates that can be used in backends such as [TabbyAPI]
 
 Look at [Huggingface's Documentation](https://huggingface.co/docs/transformers/chat_templating). It contains all the information you need to understand Jinja2's syntax and a straightforward way to create a chat template.
 
-The only exception is that HuggingFace variables such as `bos_token` and `eos_token` aren't used in TabbyAPI because other parameters add BOS and EOS upon generation.
-
 ## Downloading
 
 1. Click on the template file
