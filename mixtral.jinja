@@ -1,0 +1,12 @@
+{% for message in messages %}
+  {% if message['role'] == 'user' %}
+    ### Instruction:
+    <s>[INST] {{ message['content'] | trim }} [/INST]
+  {% elif message['role'] == 'assistant' %}
+    ### Response:
+    {{ message['content'] | trim }}
+  {% endif %}
+{% endfor %}
+{% if add_generation_prompt and messages[-1]['role'] != 'assistant' %}
+    <s>[INST]### Response Placeholder: [/INST]
+{% endif %}
