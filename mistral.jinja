@@ -1,0 +1,22 @@
+{%- set ns = namespace(first_system=false) -%}
+{{-'<s>'-}}
+{%- for message in messages %}
+    {%- if message['role'] == 'system' -%}
+        {{-' [INST] ' + message['content'] + '\n\n'-}}
+        {%- set ns.first_system = true -%}
+    {%- else -%}
+        {%- if message['role'] == 'user' -%}
+            {%- if ns.first_system -%}
+                {{-'' + message['content'].rstrip() + ' [/INST] '-}}
+                {%- set ns.first_system = false -%}
+            {%- else -%}
+                {{-' [INST] ' + message['content'].rstrip() + ' [/INST] '-}}
+            {%- endif -%}
+        {%- else -%}
+            {{-'' + message['content'] + '</s>' -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}
+    {{-''-}}
+{%- endif -%}
