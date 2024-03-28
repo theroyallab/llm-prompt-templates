@@ -1,3 +1,6 @@
+{# Metadata #}
+{% set stop_strings = ["<|START_OF_TURN_TOKEN|>", "<|END_OF_TURN_TOKEN|>"] %}
+
 {{- bos_token -}}
 {% if bos_token|length > 0 %}
     {{- '\n' -}}
