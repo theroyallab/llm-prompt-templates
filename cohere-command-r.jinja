@@ -2,9 +2,6 @@
 {% set stop_strings = ["<|START_OF_TURN_TOKEN|>", "<|END_OF_TURN_TOKEN|>"] %}
 
 {{- bos_token -}}
-{% if bos_token|length > 0 %}
-    {{- '\n' -}}
-{% endif %}
 {% if messages[0]['role'] == 'system' %}
     {% set loop_messages = messages[1:] %}
     {% set system_message = messages[0]['content'] %}
@@ -16,16 +13,16 @@
     {% set system_message = false %}
 {% endif %}
 {% if system_message != false %}
-    {{- '<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>' + system_message + '<|END_OF_TURN_TOKEN|>' }}
+    {{- '<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>' + system_message + '<|END_OF_TURN_TOKEN|>' -}}
 {% endif %}
 {% for message in loop_messages %}
     {% set content = message['content'] %}
     {% if message['role'] == 'user' %}
-        {{- '<|START_OF_TURN_TOKEN|><|USER_TOKEN|>' + content.strip() + '<|END_OF_TURN_TOKEN|>' }}
+        {{- '<|START_OF_TURN_TOKEN|><|USER_TOKEN|>' + content.strip() + '<|END_OF_TURN_TOKEN|>' -}}
     {% elif message['role'] == 'assistant' %}
-        {{- '<|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>'  + content.strip() + '<|END_OF_TURN_TOKEN|>' }}
+        {{- '<|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>'  + content.strip() + '<|END_OF_TURN_TOKEN|>' -}}
     {% elif message['role'] == 'system' %}
-        {{- '<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>' + content.strip() + '<|END_OF_TURN_TOKEN|>' }}
+        {{- '<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>' + content.strip() + '<|END_OF_TURN_TOKEN|>' -}}
     {% else %}
         {{ raise_exception('Only user, assistant, and system roles are supported!') }}
     {% endif %}
