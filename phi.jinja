@@ -1,0 +1,17 @@
+{# Metadata #}
+{% set stop_strings = ["<|user|>", "<|assistant|>", "<|system|>", "<|end|>"] %}
+
+{%- for message in messages %}
+    {% if message['role'] == 'user' %}
+        {{- '<|user|>\n' + message['content'].strip() + '<|end|>\n' -}}
+    {% elif message['role'] == 'assistant' %}
+        {{- '<|assistant|>\n'  + message['content'].strip() + '<|end|>\n' -}}
+    {% elif message['role'] == 'system' %}
+        {{- '<|system|>\n'  + message['content'].strip() + '<|end|>\n' -}}
+    {% else %}
+        {{ raise_exception('Only user, assistant, and system roles are supported!') }}
+    {% endif %}
+{% endfor %}
+{% if add_generation_prompt %}
+    {{- '<|assistant|>\n' -}}
+{% endif %}
