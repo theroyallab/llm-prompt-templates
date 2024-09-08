@@ -1,6 +1,7 @@
 {# Metadata #}
-{% set stop_strings = ["<|START_OF_TURN_TOKEN|>", "<|END_OF_TURN_TOKEN|>"] %}
+{%- set stop_strings = ["<|START_OF_TURN_TOKEN|>", "<|END_OF_TURN_TOKEN|>"] -%}
 
+{# Template #}
 {{- bos_token -}}
 {% if messages[0]['role'] == 'system' %}
     {% set loop_messages = messages[1:] %}

@@ -1,5 +1,5 @@
 {# Metadata #}
-{% set stop_strings = ["<#user#>", "<#bot#>"] %}
+{%- set stop_strings = ["<#user#>", "<#bot#>"] -%}
 
 <#meta#>
 - Date: {{ (messages|selectattr('role', 'equalto', 'meta-current_date')|list|last).content|trim if (messages|selectattr('role', 'equalto', 'meta-current_date')|list) else '' }}

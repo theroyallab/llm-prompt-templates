@@ -1,7 +1,7 @@
 {# Metadata #}
-{% set stop_strings = ["<|user|>", "<|assistant|>", "<|system|>", "<|end|>"] %}
+{%- set stop_strings = ["<|user|>", "<|assistant|>", "<|system|>", "<|end|>"] -%}
 
-{%- for message in messages %}
+{% for message in messages %}
     {% if message['role'] == 'user' %}
         {{- '<|user|>\n' + message['content'].strip() + '<|end|>\n' -}}
     {% elif message['role'] == 'assistant' %}

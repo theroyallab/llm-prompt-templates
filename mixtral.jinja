@@ -1,5 +1,5 @@
 {# Metadata #}
-{% set stop_strings = ["[INST]", "[/INST]"] %}
+{%- set stop_strings = ["[INST]", "[/INST]"] -%}
 
 {{- bos_token -}}
 {% if bos_token|length > 0 %}
