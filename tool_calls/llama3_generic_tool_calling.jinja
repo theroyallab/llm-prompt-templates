@@ -5,6 +5,7 @@ stop_strings are the tags that signal that the generation is complete
 Ex in llama 3.1, we can find the generation_config and see that 128000, 128001, 128008, 128009 should be the stop tokens
 {which are "<|begin_of_text|>", "<|end_of_text|>", "<|eom_id|>", and "<|eot_id|>"
 #}
+{%- set bos_token = "<|begin_of_text|>" -%}
 {%- set stop_strings = ["<|end_of_text|>", "<|eot_id|>", "<|eom_id|>"] -%}
 {# Define the possible message roles #}
 {%- set message_roles = ['system', 'user', 'assistant', 'tool', 'ipython'] -%}
@@ -69,7 +70,7 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
 {%- endif %}
 
 {#- System message + builtin tools #}
-{{- start_header + 'system' + start_header + '\n\n' }}
+{{- start_header + 'system' + start_header + '\n' }}
 {# It seems like the website says dont use "Environment: ipython\n" for custom tool format #}
 {#
 {%- if builtin_tools is defined or tools is not none %}
