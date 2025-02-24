@@ -54,7 +54,7 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
 {%- endif %}
 {# Template #}
 {%- set tool_reminder = tool_format_prompt + '\n\nHere is a list of functions in JSON format that you can invoke.\n\n' + tools + '\n\n' -%}
-{{- bos_token }}
+{# {{- bos_token }} #}
 {#
 {%- if custom_tools is defined %}
     {%- set tools = custom_tools %}
@@ -68,7 +68,6 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
 {%- else %}
     {%- set system_message = "" %}
 {%- endif %}
-
 {#- System message + builtin tools #}
 {{- start_header + 'system' + start_header + '\n' }}
 {# It seems like the website says dont use "Environment: ipython\n" for custom tool format #}
@@ -102,7 +101,6 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
 {%- endif %}
 {# {{- system_message }} #}
 {{- "<|eot_id|>" }}
-
 {#- Custom tools are passed in a user message with some extra guidance #}
 {%- if tools_in_user_message and not tools is none %}
     {#- Extract the first user message so we can plug it in here #}
@@ -130,7 +128,6 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
     #}
     {{- first_user_message + "<|eot_id|>"}}
 {%- endif %}
-
 {%- for message in messages %}
     {%- if not (message.role == 'ipython' or message.role == 'tool' or message.tool_calls) %}
         {{- start_header + message['role'] + end_header + '\n\n'+ message['content'] | trim + '<|eot_id|>' }}
@@ -192,5 +189,7 @@ You MUST include the `' + tool_start + '` and `' + tool_end + '` tags around the
     {{ start_header }}assistant{{ end_header }}
     {{ tool_precursor }}{{ tool_start }}
 {%- else -%}
-    {{- start_header + 'assistant' + end_header + '\n\n' }}
+    {%- if add_generation_prompt %}
+        {{- start_header + 'assistant' + end_header + '\n\n' }}
+    {%- endif %}
 {%- endif -%}
