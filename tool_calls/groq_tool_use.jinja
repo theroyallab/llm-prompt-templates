@@ -58,7 +58,7 @@ Argument Types: Use correct data types for arguments (e.g., strings in quotes, n
         {{ raise_exception('Invalid role ' + message['role'] + '. Only ' + message_roles | join(', ') + ' are supported.') }}
     {%- endif -%}
     
-    {%- set content = message['content'] | default('', true) | trim -%}
+    {%- set content = message['content'] if message['content'] is defined else '' | trim -%}
     {%- if loop.first -%}
 {{ start_header }}{{ role }}{{ end_header }}
 {{ inital_system_prompt }}
