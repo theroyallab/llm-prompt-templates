@@ -1,0 +1,39 @@
+{# Compatible with https://zed.dev local LLM server. Miight break other IDE which properly support mistral template style #}
+{%- set stop_strings = ["</s>", "[/INST]", "<tool_call>"] -%}
+{%- set tool_start = "<tool_call>" -%}
+{%- set tool_end = "</tool_call>" -%}
+{{- bos_token }}
+
+{%- if tools %}
+    [INST]
+    You are a helpful assistant. You have access to the following functions:
+    {{ tools|tojson(indent=2) }}
+    [/INST]
+{%- endif %}
+
+{%- for message in messages %}
+    {%- if message['role'] == 'system' and not loop.first %}
+        [INST] {{ message['content'] }} [/INST]
+    {%- elif message['role'] == 'user' %}
+        [INST] {{ message['content'] }} [/INST]
+    {%- elif message['role'] == 'assistant' %}
+        {# When rendering history, we use the ZED-compatible XML-JSON format #}
+        {%- if message['tool_calls'] %}
+            {%- for tool_call in message['tool_calls'] %}
+                <tool_call>
+                {"name": "{{ tool_call.function.name }}", "arguments": {{ tool_call.function.arguments }}}
+                </tool_call>
+            {%- endfor %}
+            {# Do NOT add </s> here. <tool_call> is the instruction for the server to stop. #}
+        {%- else %}
+            {{- message['content'] + "</s>" }}
+        {%- endif %}
+    {%- elif message['role'] == 'tool' %}
+        {# The working Zed format for tool results is simple text #}
+        Tool: {{- message['content'] }}</s>
+    {%- endif %}
+{%- endfor %}
+
+{%- if add_generation_prompt %}
+[INST]
+{%- endif %}
